@@ -26,7 +26,7 @@ namespace ObjectPoolSample
             {                
                 var now = DateTime.UtcNow; // ignoring timezones for this sample
 
-                var stringBuilder = builderPool.Get();
+                var stringBuilder = builderPool.Get(); // request a StringBuilder from the pool
 
                 try
                 {
@@ -51,9 +51,9 @@ namespace ObjectPoolSample
                         await context.Response.WriteAsync(stringBuilder.ToString());
                     }
                 }
-                finally
+                finally // ensure this happens even if the main code blows up!
                 {
-                    builderPool.Return(stringBuilder);
+                    builderPool.Return(stringBuilder); // return the StringBuilder to the pool
                 }
 
                 return;
